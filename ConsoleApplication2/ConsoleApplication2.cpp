@@ -100,11 +100,17 @@ void do_movement()
 	// 摄像机控制
 	GLfloat cameraSpeed = 5.0f * deltaTime;
 
-	if (keys[GLFW_KEY_W])
-		cameraPos += cameraSpeed * cameraFront;
+	if (keys[GLFW_KEY_W]) {
+		cameraPos.x += cameraSpeed * cameraFront.x;
+		cameraPos.z += cameraSpeed * cameraFront.z;
+	}
+	
 
-	if (keys[GLFW_KEY_S])
-		cameraPos -= cameraSpeed * cameraFront;
+	if (keys[GLFW_KEY_S]) {
+		cameraPos.x -= cameraSpeed * cameraFront.x;
+		cameraPos.z -= cameraSpeed * cameraFront.z;
+	}
+		
 
 	if (keys[GLFW_KEY_A])
 		cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
@@ -245,7 +251,7 @@ int main()
 		// Create transformations
 		glm::mat4 view;
 		glm::mat4 projection;
-		view = glm::lookAt(cameraPos, cameraFront + cameraFront, cameraUp);
+		view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
 		projection = glm::perspective(fov, 1.0f, 0.1f, 100.0f);
 		// Get their uniform location
 		GLint modelLoc = glGetUniformLocation(shader.ID, "model");
